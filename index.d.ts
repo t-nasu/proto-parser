@@ -98,6 +98,7 @@ export interface MessageDefinition extends NamespaceBase {
 export interface EnumDefinition extends NamespaceBase {
   syntaxType: SyntaxType.EnumDefinition;
   values: Record<string, number>;
+  comments: Record<string, string>;
   reserved?: number[] | string;
 }
 

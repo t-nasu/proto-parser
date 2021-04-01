@@ -542,7 +542,7 @@ class EnumDefinition extends NamespaceDefinition {
 
   toJson() {
     const json = NamespaceDefinition.prototype.toJson.call(this);
-    Object.assign(json, copyObject(this, ['values', 'reserved']));
+    Object.assign(json, copyObject(this, ['values', 'comments', 'reserved']));
     return json;
   }
 }

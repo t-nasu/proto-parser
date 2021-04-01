@@ -11,9 +11,14 @@ syntax = 'proto3';
 // comment
 enum Test {
   option allow_alias = true;
-  UNIVERSAL = 0[a=1]; // tail comment
-  WEB = 1; /*comment*/
-  IMAGES = /*comment*/ 1;
+  // UNIVERSAL
+  UNIVERSAL = 0[a=1]; 
+  // WEB
+  WEB = 1; 
+  /* IMAGES */
+  IMAGES = 1;
+  // MOBILE
+  MOBILE = 3;
   reserved 2, 9 to 11;
   reserved "FOO", "bar";
 }
@@ -24,8 +29,14 @@ enum Test {
       name: 'Test',
       fullName: '.Test',
       comment: 'comment',
+      comments: {
+        UNIVERSAL: 'UNIVERSAL',
+        WEB: 'WEB',
+        IMAGES: 'IMAGES',
+        MOBILE: 'MOBILE',
+      },
       syntaxType: 'EnumDefinition',
-      values: '{"UNIVERSAL":0,"WEB":1,"IMAGES":1}',
+      values: '{"UNIVERSAL":0,"WEB":1,"IMAGES":1,"MOBILE":3}',
       reserved: [[2, 2], [9, 11], 'FOO', 'bar'],
       nested: undefined,
     };
