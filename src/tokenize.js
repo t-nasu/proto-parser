@@ -96,9 +96,10 @@ tokenize.unescape = unescape;
  * Tokenizes the given .proto source and returns an object with useful utility functions.
  * @param {string} source Source contents
  * @param {boolean} alternateCommentMode Whether we should activate alternate comment parsing mode.
+ * @param {boolean} trimCommentSpace Whethere keep space in comment
  * @returns {ITokenizerHandle} Tokenizer handle
  */
-function tokenize(source, alternateCommentMode) {
+function tokenize(source, alternateCommentMode, trimCommentSpace) {
   /* eslint-disable callback-return */
   source = source.toString();
 
@@ -183,11 +184,18 @@ function tokenize(source, alternateCommentMode) {
     } while (c === ' ' || c === '\t');
     const lines = source.substring(start, end).split(setCommentSplitRe);
     for (let i = 0; i < lines.length; ++i) {
-      lines[i] = lines[i]
-        .replace(alternateCommentMode ? setCommentAltRe : setCommentRe, '')
-        .trim();
+      if (trimCommentSpace) {
+        lines[i] = lines[i]
+          .replace(alternateCommentMode ? setCommentAltRe : setCommentRe, '')
+          .trim();
+      } else {
+        lines[i] = lines[i].replace(/^ /, '').replace(/^ *[*/]+ ?/, '');
+      }
     }
-    commentText = lines.join('\n').trim();
+    commentText = lines.join('\n');
+    if (trimCommentSpace) {
+      commentText = commentText.trim();
+    }
   }
 
   function isDoubleSlashCommentLine(startOffset) {

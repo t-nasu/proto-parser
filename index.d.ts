@@ -130,6 +130,7 @@ export interface ProtoError {
 export interface ParseOption {
   keepCase?: boolean;
   alternateCommentMode?: boolean;
+  trimCommentSpace?: boolean;
   resolve?: boolean;
   weakResolve?: boolean;
   toJson?: boolean;

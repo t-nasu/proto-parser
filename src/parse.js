@@ -6,6 +6,7 @@ parse.filename = null;
 parse.defaults = {
   keepCase: true,
   alternateCommentMode: true,
+  trimCommentSpace: true,
   resolve: true,
   weakResolve: false,
   toJson: true,
@@ -75,7 +76,11 @@ function parse(source, opt) {
 
   const options = { ...parse.defaults, ...opt };
 
-  const tn = tokenize(source, options.alternateCommentMode || false);
+  const tn = tokenize(
+    source,
+    options.alternateCommentMode || false,
+    options.trimCommentSpace
+  );
   const { next } = tn;
   const { push } = tn;
   const { peek } = tn;

@@ -34,7 +34,7 @@ message Test {
 syntax = 'proto3';
 
 /**
-comment1
+  comment1
 */
 message Test {
   option (my_option) = 'Hello world!';
@@ -568,5 +568,37 @@ message Test {
 
     const protoError = t.parse(idl) as t.ProtoError;
     return expect(protoError.syntaxType).to.eql(t.SyntaxType.ProtoError);
+  });
+
+  it('should keep comment space when trimCommentSpace is false', () => {
+    const idl = `
+syntax = 'proto3';
+/*
+ * comment1
+ *   comment2
+ */
+message Test {}
+    `;
+
+    const doc = t.parse(idl, { trimCommentSpace: false }) as t.ProtoDocument;
+    return expect(doc.root.nested?.Test.comment).to.eql(
+      'comment1\n  comment2\n'
+    );
+  });
+
+  it('should keep field comment space when trimCommentSpace is false', () => {
+    const idl = `
+syntax = 'proto3';
+message Test {
+  string key = 1; ///  comment 
+}
+    `;
+
+    const doc = t.parse(idl, {
+      trimCommentSpace: false,
+      alternateCommentMode: true,
+    }) as t.ProtoDocument;
+    const message = doc.root.nested?.Test as t.MessageDefinition;
+    return expect(message.fields.key.comment).to.eql(' comment \n');
   });
 });
